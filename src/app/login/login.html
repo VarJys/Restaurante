@@ -4,13 +4,13 @@
         <p>Por favor, ingresa tus credenciales</p>
         <h1>Bienvenido de vuelta</h1>
       </div>
-      <form class="login-form">
+      <form class="login-form" (ngSubmit)="onSubmit()">
         <div class="form-group">
-          <input type="text" class="input-field" id="username" placeholder="Usuario" required>
-          <label for="username" class="input-label">Usuario</label>
+          <input type="email" class="input-field" id="username" name="email" placeholder="Usuario o Correo" [(ngModel)]="email" required>
+          <label for="username" class="input-label">Usuario o Correo</label>
         </div>
         <div class="form-group">
-          <input [type]="showPassword ? 'text' : 'password'" class="input-field" id="password" placeholder="Contraseña" required>
+          <input [type]="showPassword ? 'text' : 'password'" class="input-field" id="password" name="password" placeholder="Contraseña" [(ngModel)]="password" required>
           <label for="password" class="input-label">Contraseña</label>
           <div class="eye" (click)="togglePassword()">
             <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-slash" viewBox="0 0 16 16">
@@ -33,7 +33,12 @@
         <div class="form-col forgot-password">
           <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
         </div>
-        <button type="submit" class="form-btn form-btn--submit">Entrar</button>
+        <div *ngIf="errorMsg" class="error-msg" style="color: red; margin-bottom: 10px;">
+          {{ errorMsg }}
+        </div>
+        <button type="submit" class="form-btn form-btn--submit" [disabled]="loading">
+          {{ loading ? 'Cargando...' : 'Entrar' }}
+        </button>
       </form>
       <div class="form-divider">
         <p>Or</p>

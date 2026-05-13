@@ -1,0 +1,264 @@
+.dashboard-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f4f6f9;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dash-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #1a1a2e;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.dash-nav .brand {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.dash-nav .actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-logout {
+  background-color: #e63946;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-logout:hover {
+  background-color: #d62828;
+}
+
+.dash-body {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: white;
+  border-right: 1px solid #ddd;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  color: #333;
+  transition: background 0.2s;
+}
+
+.sidebar li:hover {
+  background-color: #f0f4f8;
+}
+
+.sidebar li.active {
+  background-color: #e2e8f0;
+  border-left: 4px solid #457b9d;
+  font-weight: bold;
+}
+
+.content-area {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.tab-content h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: #1d3557;
+}
+
+/* Stats */
+.stats-grid {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  flex: 1;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.stat-card h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  color: #666;
+}
+
+.stat-card .stat-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #457b9d;
+  margin: 0;
+}
+
+.stat-card.error .stat-number {
+  color: #e63946;
+}
+
+/* Forms */
+.form-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.form-card h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #1d3557;
+}
+
+.inline-form {
+  display: flex;
+  gap: 1rem;
+}
+
+.inline-form input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.column-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.column-form label {
+  font-weight: 600;
+  color: #444;
+}
+
+.column-form input, .column-form select {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.btn-primary {
+  background-color: #457b9d;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #1d3557;
+}
+
+/* Tables */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.data-table th, .data-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.data-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+}
+
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.badge.active {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.badge.expired {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Calculator Grid */
+.calculator-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.calc-card .input-group {
+  margin-bottom: 1rem;
+}
+
+.calc-card .input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.calc-card .input-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.calc-result {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #e2e8f0;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 1.25rem;
+  color: #1d3557;
+}
+
+.mt-2 {
+  margin-top: 1rem;
+}

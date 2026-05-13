@@ -1,16 +1,43 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { SupabaseService } from '../services/supabase.service';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login {
-  showPassword: boolean = false;
+  showPassword = false;
+  email = '';
+  password = '';
+  loading = false;
+  errorMsg = '';
+
+  constructor(private supabaseService: SupabaseService) {}
 
   togglePassword() {
     this.showPassword = !this.showPassword;
+  }
+
+  async onSubmit() {
+    try {
+      this.loading = true;
+      this.errorMsg = '';
+      const { error } = await this.supabaseService.signInWithPassword(this.email, this.password);
+      if (error) {
+        this.errorMsg = error.message;
+      } else {
+        // Redirect to inicio or dashboard
+        console.log('Login successful');
+      }
+    } catch (err: any) {
+      this.errorMsg = err.message || 'An error occurred';
+    } finally {
+      this.loading = false;
+    }
   }
 }

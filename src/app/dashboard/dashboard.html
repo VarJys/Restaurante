@@ -1,0 +1,191 @@
+<div class="dashboard-layout">
+  <!-- Navbar Privado -->
+  <nav class="dash-nav">
+    <div class="brand">Admin Panel</div>
+    <div class="actions">
+      <span class="user-email" *ngIf="supabaseService.user">{{ supabaseService.user.email }}</span>
+      <button class="btn-logout" (click)="logout()">Cerrar Sesión</button>
+    </div>
+  </nav>
+
+  <div class="dash-body">
+    <!-- Sidebar / Menú de Tabs -->
+    <aside class="sidebar">
+      <ul>
+        <li [class.active]="activeTab === 'overview'" (click)="activeTab = 'overview'">Resumen</li>
+        <li [class.active]="activeTab === 'clients'" (click)="activeTab = 'clients'">Gestionar Comensales</li>
+        <li [class.active]="activeTab === 'payments'" (click)="activeTab = 'payments'">Mensualidades Activas</li>
+        <li [class.active]="activeTab === 'missing'" (click)="activeTab = 'missing'">Pagos Faltantes ({{ expiredPayments.length }})</li>
+        <li [class.active]="activeTab === 'calculator'" (click)="activeTab = 'calculator'">Calculadora y Asignar</li>
+      </ul>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="content-area">
+      
+      <!-- Tab: Resumen -->
+      <section *ngIf="activeTab === 'overview'" class="tab-content">
+        <h2>Resumen del Restaurante</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h3>Comensales Totales</h3>
+            <p class="stat-number">{{ clients.length }}</p>
+          </div>
+          <div class="stat-card">
+            <h3>Mensualidades Activas</h3>
+            <p class="stat-number">{{ activeClientsCount }}</p>
+          </div>
+          <div class="stat-card error">
+            <h3>Mensualidades Vencidas</h3>
+            <p class="stat-number">{{ expiredPayments.length }}</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab: Clientes -->
+      <section *ngIf="activeTab === 'clients'" class="tab-content">
+        <h2>Gestionar Comensales</h2>
+        
+        <div class="form-card">
+          <h3>Registrar Nuevo Comensal</h3>
+          <form (ngSubmit)="addClient()" class="inline-form">
+            <input type="text" placeholder="Nombre Completo" [(ngModel)]="newClient.fullName" name="cName" required>
+            <input type="text" placeholder="Identificador (ej: Cédula/Código)" [(ngModel)]="newClient.identifier" name="cId">
+            <button type="submit" class="btn-primary">Registrar</button>
+          </form>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Identificador</th>
+              <th>Fecha de Registro</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let client of clients">
+              <td>{{ client.full_name }}</td>
+              <td>{{ client.identifier || '-' }}</td>
+              <td>{{ client.created_at | date }}</td>
+            </tr>
+            <tr *ngIf="clients.length === 0">
+              <td colspan="3" class="text-center">No hay comensales registrados</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Tab: Pagos Activos -->
+      <section *ngIf="activeTab === 'payments'" class="tab-content">
+        <h2>Mensualidades Activas</h2>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Comensal</th>
+              <th>Monto</th>
+              <th>Inicio</th>
+              <th>Fin</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let payment of payments">
+              <tr *ngIf="payment.status === 'active'">
+                <td>{{ payment.clients?.full_name }}</td>
+                <td>{{ payment.amount | currency }}</td>
+                <td>{{ payment.start_date | date }}</td>
+                <td>{{ payment.end_date | date }}</td>
+                <td><span class="badge active">Activa</span></td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Tab: Pagos Faltantes -->
+      <section *ngIf="activeTab === 'missing'" class="tab-content">
+        <h2>Pagos Faltantes / Vencidos</h2>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Comensal</th>
+              <th>Último Monto</th>
+              <th>Venció el</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let payment of expiredPayments">
+              <td>{{ payment.clients?.full_name }}</td>
+              <td>{{ payment.amount | currency }}</td>
+              <td>{{ payment.end_date | date }}</td>
+              <td><span class="badge expired">Vencida</span></td>
+            </tr>
+            <tr *ngIf="expiredPayments.length === 0">
+              <td colspan="4" class="text-center">No hay pagos vencidos</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Tab: Calculadora y Asignar Mensualidad -->
+      <section *ngIf="activeTab === 'calculator'" class="tab-content">
+        <h2>Calculadora Dinámica de Mensualidad</h2>
+        
+        <div class="calculator-grid">
+          <!-- Variables de Calculadora -->
+          <div class="form-card calc-card">
+            <h3>Variables de Cálculo</h3>
+            <div class="input-group">
+              <label>Precio por comida ($):</label>
+              <input type="number" [(ngModel)]="pricePerMeal" (ngModelChange)="updateCalculator()" name="price">
+            </div>
+            <div class="input-group">
+              <label>Días a la semana:</label>
+              <input type="number" [(ngModel)]="calcDaysPerWeek" (ngModelChange)="updateCalculator()" name="days">
+            </div>
+            <div class="input-group">
+              <label>Comidas por día (Ej: Almuerzo y Cena = 2):</label>
+              <input type="number" [(ngModel)]="calcMealsPerDay" (ngModelChange)="updateCalculator()" name="meals">
+            </div>
+            <div class="input-group">
+              <label>Semanas a pagar:</label>
+              <input type="number" [(ngModel)]="calcWeeks" (ngModelChange)="updateCalculator()" name="weeks">
+            </div>
+            <div class="calc-result">
+              Total Sugerido: <strong>{{ calculatedTotal | currency }}</strong>
+            </div>
+          </div>
+
+          <!-- Formulario de Asignación -->
+          <div class="form-card">
+            <h3>Asignar Pago a Comensal</h3>
+            <form (ngSubmit)="addPayment()" class="column-form">
+              <label>Comensal:</label>
+              <select [(ngModel)]="newPayment.clientId" name="selClient" required>
+                <option value="" disabled selected>-- Selecciona un comensal --</option>
+                <option *ngFor="let client of clients" [value]="client.id">
+                  {{ client.full_name }}
+                </option>
+              </select>
+
+              <label>Monto a Cobrar ($):</label>
+              <input type="number" [(ngModel)]="newPayment.amount" name="amount" required>
+
+              <label>Fecha de Inicio:</label>
+              <input type="date" [(ngModel)]="newPayment.startDate" name="sDate" required>
+
+              <label>Fecha de Fin:</label>
+              <input type="date" [(ngModel)]="newPayment.endDate" name="eDate" required>
+
+              <button type="submit" class="btn-primary mt-2">Registrar Mensualidad</button>
+            </form>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+</div>
