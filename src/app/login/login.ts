@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { SupabaseService } from '../services/supabase.service';
 
 @Component({
@@ -17,7 +18,7 @@ export class Login {
   loading = false;
   errorMsg = '';
 
-  constructor(private supabaseService: SupabaseService) {}
+  constructor(private supabaseService: SupabaseService, private router: Router) {}
 
   togglePassword() {
     this.showPassword = !this.showPassword;
@@ -33,6 +34,7 @@ export class Login {
       } else {
         // Redirect to inicio or dashboard
         console.log('Login successful');
+        this.router.navigate(['/dashboard']);
       }
     } catch (err: any) {
       this.errorMsg = err.message || 'An error occurred';
