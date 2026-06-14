@@ -1,15 +1,14 @@
-
 :host {
-  --bg:          beige;
-  --surface:     #0e0b14;
-  --purple:      #ed3a76;
-  --purple-l:    #2d0946;
-  --purple-gl:   #cf1983;
-  --purple-dim:  #9a61fc;
-  --white:       #611081;
-  --muted:       #11011d;
-  --border:      rgba(124, 58, 237, 0.25);
-  --pill-bg:     rgba(124, 58, 237, 0.08);
+  --bg: beige;
+  --surface: #0e0b14;
+  --purple: #ed3a76;
+  --purple-l: #2d0946;
+  --purple-gl: #cf1983;
+  --purple-dim: #9a61fc;
+  --white: #611081;
+  --muted: #11011d;
+  --border: rgba(124, 58, 237, 0.25);
+  --pill-bg: rgba(124, 58, 237, 0.08);
 
   --font-h: 'Syne', sans-serif;
   --font-b: 'Space Grotesk', sans-serif;
@@ -86,8 +85,8 @@
 }
 
 .navbar .btn {
-  padding: 0.65rem 1.8rem;
-  font-size: 0.78rem;
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
   white-space: nowrap;
 }
 
@@ -97,16 +96,16 @@
 
 .top-bar {
   position: absolute;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--purple) 30%,
-    var(--purple-l) 50%,
-    var(--purple) 70%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      transparent 0%,
+      var(--purple) 30%,
+      var(--purple-l) 50%,
+      var(--purple) 70%,
+      transparent 100%);
   animation: fu 1s var(--ease) both;
 }
 
@@ -118,29 +117,42 @@
 }
 
 .orb-top {
-  width: 500px; height: 300px;
+  width: 500px;
+  height: 300px;
   background: radial-gradient(circle, rgba(124, 58, 237, 0.45) 0%, transparent 70%);
-  top: -80px; left: 50%;
+  top: -80px;
+  left: 50%;
   transform: translateX(-50%);
   animation: pulse-orb 6s ease-in-out infinite alternate;
 }
 
 .orb-bl {
-  width: 320px; height: 320px;
+  width: 320px;
+  height: 320px;
   background: radial-gradient(circle, rgba(168, 85, 247, 0.25) 0%, transparent 70%);
-  bottom: 0; left: -60px;
+  bottom: 0;
+  left: -60px;
   animation: pulse-orb 8s ease-in-out infinite alternate-reverse;
 }
 
 .orb-br {
-  width: 260px; height: 260px;
+  width: 260px;
+  height: 260px;
   background: radial-gradient(circle, rgba(59, 31, 107, 0.6) 0%, transparent 70%);
-  bottom: 60px; right: -40px;
+  bottom: 60px;
+  right: -40px;
 }
 
 @keyframes pulse-orb {
-  from { opacity: 0.7; transform: translateX(-50%) scale(1); }
-  to   { opacity: 1;   transform: translateX(-50%) scale(1.15); }
+  from {
+    opacity: 0.7;
+    transform: translateX(-50%) scale(1);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.15);
+  }
 }
 
 /* ── Contenido central ── */
@@ -157,10 +169,10 @@
   align-items: center;
   gap: 0.5rem;
   border-radius: 6px;
-  padding: 0.38rem 1rem;
+  padding: 0.5rem 1.2rem;
   color: beige;
   font-family: var(--font-b);
-  font-size: 0.7rem;
+  font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -178,8 +190,15 @@
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.3; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
 }
 
 h1 {
@@ -203,7 +222,7 @@ h1 {
 }
 
 .t-main {
-  font-size: clamp(3.2rem, 9vw, 5.5rem);
+  font-size: clamp(4rem, 10vw, 6.5rem);
   font-weight: 800;
   color: var(--white);
   letter-spacing: -0.03em;
@@ -233,7 +252,7 @@ h1 {
 }
 
 .t-hl {
-  font-size: clamp(1.5rem, 4.5vw, 2.8rem);
+  font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 800;
   color: var(--white);
   letter-spacing: -0.02em;
@@ -271,11 +290,11 @@ h1 {
 /* ── Descripción ── */
 .desc {
   font-family: var(--font-b);
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 300;
   line-height: 1.8;
   color: var(--muted);
-  max-width: 520px;
+  max-width: 600px;
   margin: 0 auto 2.2rem;
   animation: fu 0.7s var(--ease) both;
   animation-delay: 0.54s;
@@ -296,19 +315,19 @@ h1 {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.42rem 1rem;
+  padding: 0.5rem 1.2rem;
   border-radius: 6px;
   border: 1px solid var(--border);
   background: var(--pill-bg);
   color: var(--muted);
   font-family: var(--font-b);
-  font-size: 0.79rem;
+  font-size: 1rem;
   transition: all 0.22s;
   cursor: default;
 
   svg {
-    width: 13px;
-    height: 13px;
+    width: 16px;
+    height: 16px;
     color: var(--purple-l);
     flex-shrink: 0;
   }
@@ -335,11 +354,11 @@ h1 {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  padding: 0.9rem 2.1rem;
+  padding: 1rem 2.5rem;
   border-radius: 8px;
   border: none;
   font-family: var(--font-b);
-  font-size: 0.85rem;
+  font-size: 1.1rem;
   font-weight: 600;
   letter-spacing: 0.05em;
   cursor: pointer;
@@ -347,18 +366,23 @@ h1 {
   transition: transform 0.2s var(--ease), box-shadow 0.2s;
 
   svg {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     transition: transform 0.2s;
     flex-shrink: 0;
   }
 
   &:hover {
     transform: translateY(-2px);
-    svg { transform: translateX(4px); }
+
+    svg {
+      transform: translateX(4px);
+    }
   }
 
-  &:active { transform: translateY(0); }
+  &:active {
+    transform: translateY(0);
+  }
 }
 
 .btn-p {
@@ -409,7 +433,9 @@ h1 {
   width: 48px;
   background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.3));
 
-  &.r { background: linear-gradient(90deg, rgba(124, 58, 237, 0.3), transparent); }
+  &.r {
+    background: linear-gradient(90deg, rgba(124, 58, 237, 0.3), transparent);
+  }
 }
 
 .fd {
@@ -422,7 +448,7 @@ h1 {
 
 .copy {
   font-family: var(--font-b);
-  font-size: 0.68rem;
+  font-size: 2.0rem;
   color: rgb(85, 85, 85);
   letter-spacing: 0.06em;
   margin-top: 0.65rem;
@@ -430,8 +456,15 @@ h1 {
 
 /* ── Animación base ── */
 @keyframes fu {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ── Responsive ── */
@@ -441,7 +474,7 @@ h1 {
   }
 
   .navbar-badge {
-    font-size: 0.7rem;
+    font-size: 2.0rem;
     padding: 0.35rem 0.9rem;
   }
 
@@ -483,6 +516,8 @@ h1 {
     flex-direction: column;
     align-items: stretch;
 
-    .btn { justify-content: center; }
+    .btn {
+      justify-content: center;
+    }
   }
 }

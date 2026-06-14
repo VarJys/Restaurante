@@ -64,6 +64,7 @@
   cursor: pointer;
   border-bottom: 1px solid #eee;
   color: #333;
+  font-size: 1.1rem;
   transition: background 0.2s;
 }
 
@@ -87,6 +88,7 @@
   margin-top: 0;
   margin-bottom: 1.5rem;
   color: #1d3557;
+  font-size: 2rem;
 }
 
 /* Stats */
@@ -107,7 +109,7 @@
 
 .stat-card h3 {
   margin: 0 0 0.5rem 0;
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: #666;
 }
 
@@ -135,6 +137,7 @@
   margin-top: 0;
   margin-bottom: 1rem;
   color: #1d3557;
+  font-size: 1.4rem;
 }
 
 .inline-form {
@@ -174,12 +177,67 @@
   border-radius: 4px;
   cursor: pointer;
   font-weight: 600;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 
 .btn-primary:hover {
   background-color: #1d3557;
+  transform: translateY(-1px);
 }
+
+.btn-secondary {
+  background-color: #f1c40f;
+  color: #333;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background-color: #d4ac0d;
+  transform: translateY(-1px);
+}
+
+.btn-success {
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-success:hover {
+  background-color: #27ae60;
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+  transform: translateY(-1px);
+}
+
+.btn-sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
 
 /* Tables */
 .data-table {
@@ -195,6 +253,7 @@
   padding: 1rem;
   text-align: left;
   border-bottom: 1px solid #eee;
+  font-size: 1.05rem;
 }
 
 .data-table th {

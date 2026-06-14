@@ -1,7 +1,7 @@
 <div class="dashboard-layout">
   <!-- Navbar Privado -->
   <nav class="dash-nav">
-    <div class="brand">Admin Panel</div>
+    <div class="brand">PANEL DE RESTAURANTE</div>
     <div class="actions">
       <span class="user-email" *ngIf="supabaseService.user">{{ supabaseService.user.email }}</span>
       <button class="btn-logout" (click)="logout()">Cerrar Sesión</button>
@@ -15,14 +15,15 @@
         <li [class.active]="activeTab === 'overview'" (click)="activeTab = 'overview'">Resumen</li>
         <li [class.active]="activeTab === 'clients'" (click)="activeTab = 'clients'">Gestionar Comensales</li>
         <li [class.active]="activeTab === 'payments'" (click)="activeTab = 'payments'">Mensualidades Activas</li>
-        <li [class.active]="activeTab === 'missing'" (click)="activeTab = 'missing'">Pagos Faltantes ({{ expiredPayments.length }})</li>
+        <li [class.active]="activeTab === 'missing'" (click)="activeTab = 'missing'">Pagos Faltantes ({{
+          expiredPayments.length }})</li>
         <li [class.active]="activeTab === 'calculator'" (click)="activeTab = 'calculator'">Calculadora y Asignar</li>
       </ul>
     </aside>
 
     <!-- Contenido Principal -->
     <main class="content-area">
-      
+
       <!-- Tab: Resumen -->
       <section *ngIf="activeTab === 'overview'" class="tab-content">
         <h2>Resumen del Restaurante</h2>
@@ -40,18 +41,51 @@
             <p class="stat-number">{{ expiredPayments.length }}</p>
           </div>
         </div>
+
+        <div class="semaphore-section mt-4">
+          <h3>Estado de Comensales (Semáforo)</h3>
+          <div class="semaphore-container" style="display: flex; gap: 20px; flex-wrap: wrap;">
+            <div class="semaphore-group" style="flex: 1; min-width: 300px; font-size: 2.0rem">
+              <h4 style="color: #2ecc71;">🟢 Al Día (Activas)</h4>
+              <ul style="list-style: none; padding: 0;">
+                <li *ngFor="let payment of activePayments"
+                  style="padding: 10px; border-left: 4px solid #2ecc71; background: #f9f9f9; margin-bottom: 5px; border-radius: 4px;font-size: 2.0rem">
+                  <strong>{{ payment.clients?.full_name }}</strong> <br>
+                  <small>Fin: {{ payment.end_date | date }}</small>
+                </li>
+                <li *ngIf="activePayments.length === 0" style="color: #7f8c8d; font-style: italic;">No hay mensualidades
+                  activas.</li>
+              </ul>
+            </div>
+
+            <div class="semaphore-group" style="flex: 1; min-width: 300px;font-size: 2.0rem">
+              <h4 style="color: #e74c3c;">🔴 Vencidas o Faltantes</h4>
+              <ul style="list-style: none; padding: 0;">
+                <li *ngFor="let payment of expiredPayments"
+                  style="padding: 10px; border-left: 4px solid #e74c3c; background: #fff5f5; margin-bottom: 5px; border-radius: 4px;">
+                  <strong>{{ payment.clients?.full_name }}</strong> <br>
+                  <small>Deuda: {{ (payment.amount - (payment.amount_paid || 0)) | currency }}</small>
+                </li>
+                <li *ngIf="expiredPayments.length === 0" style="color: #7f8c8d; font-style: italic;">No hay
+                  mensualidades vencidas.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- Tab: Clientes -->
       <section *ngIf="activeTab === 'clients'" class="tab-content">
         <h2>Gestionar Comensales</h2>
-        
+
         <div class="form-card">
-          <h3>Registrar Nuevo Comensal</h3>
-          <form (ngSubmit)="addClient()" class="inline-form">
+          <h3>{{ editingClient ? 'Editar Comensal' : 'Registrar Nuevo Comensal' }}</h3>
+          <form (ngSubmit)="saveClient()" class="inline-form">
             <input type="text" placeholder="Nombre Completo" [(ngModel)]="newClient.fullName" name="cName" required>
-            <input type="text" placeholder="Identificador (ej: Cédula/Código)" [(ngModel)]="newClient.identifier" name="cId">
-            <button type="submit" class="btn-primary">Registrar</button>
+            <input type="text" placeholder="Identificador (ej: Cédula/Código)" [(ngModel)]="newClient.identifier"
+              name="cId">
+            <button type="submit" class="btn-primary">{{ editingClient ? 'Guardar Cambios' : 'Registrar' }}</button>
+            <button type="button" class="btn-secondary" *ngIf="editingClient" (click)="cancelEdit()">Cancelar</button>
           </form>
         </div>
 
@@ -61,6 +95,7 @@
               <th>Nombre</th>
               <th>Identificador</th>
               <th>Fecha de Registro</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -68,9 +103,14 @@
               <td>{{ client.full_name }}</td>
               <td>{{ client.identifier || '-' }}</td>
               <td>{{ client.created_at | date }}</td>
+              <td>
+                <button class="btn-secondary btn-sm" (click)="editClient(client)">Editar</button>
+                <button class="btn-danger btn-sm ml-2" (click)="deleteClient(client)"
+                  style="margin-left: 5px;">Eliminar</button>
+              </td>
             </tr>
             <tr *ngIf="clients.length === 0">
-              <td colspan="3" class="text-center">No hay comensales registrados</td>
+              <td colspan="4" class="text-center">No hay comensales registrados</td>
             </tr>
           </tbody>
         </table>
@@ -83,10 +123,13 @@
           <thead>
             <tr>
               <th>Comensal</th>
-              <th>Monto</th>
+              <th>Monto Total</th>
+              <th>Abonado</th>
+              <th>Deuda</th>
               <th>Inicio</th>
               <th>Fin</th>
               <th>Estado</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -94,9 +137,16 @@
               <tr *ngIf="payment.status === 'active'">
                 <td>{{ payment.clients?.full_name }}</td>
                 <td>{{ payment.amount | currency }}</td>
+                <td>{{ (payment.amount_paid || 0) | currency }}</td>
+                <td [class.error]="(payment.amount - (payment.amount_paid || 0)) > 0">
+                  {{ (payment.amount - (payment.amount_paid || 0)) | currency }}
+                </td>
                 <td>{{ payment.start_date | date }}</td>
                 <td>{{ payment.end_date | date }}</td>
                 <td><span class="badge active">Activa</span></td>
+                <td>
+                  <button class="btn-success btn-sm" (click)="addAbono(payment)">Abonar</button>
+                </td>
               </tr>
             </ng-container>
           </tbody>
@@ -110,20 +160,30 @@
           <thead>
             <tr>
               <th>Comensal</th>
-              <th>Último Monto</th>
+              <th>Monto Total</th>
+              <th>Abonado</th>
+              <th>Deuda</th>
               <th>Venció el</th>
               <th>Estado</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let payment of expiredPayments">
               <td>{{ payment.clients?.full_name }}</td>
               <td>{{ payment.amount | currency }}</td>
+              <td>{{ (payment.amount_paid || 0) | currency }}</td>
+              <td class="error">
+                {{ (payment.amount - (payment.amount_paid || 0)) | currency }}
+              </td>
               <td>{{ payment.end_date | date }}</td>
               <td><span class="badge expired">Vencida</span></td>
+              <td>
+                <button class="btn-success btn-sm" (click)="addAbono(payment)">Abonar</button>
+              </td>
             </tr>
             <tr *ngIf="expiredPayments.length === 0">
-              <td colspan="4" class="text-center">No hay pagos vencidos</td>
+              <td colspan="7" class="text-center">No hay pagos vencidos</td>
             </tr>
           </tbody>
         </table>
@@ -132,7 +192,7 @@
       <!-- Tab: Calculadora y Asignar Mensualidad -->
       <section *ngIf="activeTab === 'calculator'" class="tab-content">
         <h2>Calculadora Dinámica de Mensualidad</h2>
-        
+
         <div class="calculator-grid">
           <!-- Variables de Calculadora -->
           <div class="form-card calc-card">
@@ -172,6 +232,9 @@
 
               <label>Monto a Cobrar ($):</label>
               <input type="number" [(ngModel)]="newPayment.amount" name="amount" required>
+
+              <label>Abono Inicial ($):</label>
+              <input type="number" [(ngModel)]="newPayment.amountPaid" name="amountPaid">
 
               <label>Fecha de Inicio:</label>
               <input type="date" [(ngModel)]="newPayment.startDate" name="sDate" required>

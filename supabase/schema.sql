@@ -14,6 +14,7 @@ create table public.payments (
     id uuid default uuid_generate_v4() primary key,
     client_id uuid not null references public.clients(id) on delete cascade,
     amount numeric(10, 2) not null check (amount >= 0),
+    amount_paid numeric(10, 2) not null default 0 check (amount_paid >= 0),
     start_date date not null,
     end_date date not null check (end_date >= start_date),
     status text not null check (status in ('active', 'expired', 'pending')) default 'active',

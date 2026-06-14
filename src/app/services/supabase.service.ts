@@ -26,6 +26,11 @@ export class SupabaseService {
     });
   }
 
+  public async getSession() {
+    const { data: { session } } = await this.supabase.auth.getSession();
+    return session;
+  }
+
   // --- AUTH METHODS (Admin Only) ---
   
   get user$(): Observable<User | null> {
@@ -64,6 +69,21 @@ export class SupabaseService {
       .select();
   }
 
+  async updateClient(id: string, fullName: string, identifier: string) {
+    return await this.supabase
+      .from('clients')
+      .update({ full_name: fullName, identifier })
+      .eq('id', id)
+      .select();
+  }
+
+  async deleteClient(id: string) {
+    return await this.supabase
+      .from('clients')
+      .delete()
+      .eq('id', id);
+  }
+
   // --- PAYMENTS METHODS ---
   
   async getPayments() {
@@ -73,16 +93,25 @@ export class SupabaseService {
       .order('end_date', { ascending: true });
   }
 
-  async addPayment(clientId: string, amount: number, startDate: string, endDate: string) {
+  async addPayment(clientId: string, amount: number, amountPaid: number, startDate: string, endDate: string) {
     return await this.supabase
       .from('payments')
       .insert([{
         client_id: clientId,
         amount: amount,
+        amount_paid: amountPaid,
         start_date: startDate,
         end_date: endDate,
         status: 'active'
       }])
+      .select();
+  }
+
+  async updatePaymentAmountPaid(paymentId: string, newAmountPaid: number) {
+    return await this.supabase
+      .from('payments')
+      .update({ amount_paid: newAmountPaid })
+      .eq('id', paymentId)
       .select();
   }
 

@@ -44,14 +44,14 @@ body {
 }
 
 .form-header p {
-  font-size: 14px;
+  font-size: 16px;
   color: #666;
   margin-bottom: 8px;
   font-weight: 500;
 }
 
 .form-header h1 {
-  font-size: 28px;
+  font-size: 34px;
   color: #50046e;
   font-weight: 700;
 }
@@ -74,7 +74,7 @@ body {
   padding: 16px 20px;
   border: 2px solid #e0e0e0;
   border-radius: 12px;
-  font-size: 16px;
+  font-size: 18px;
   background: #fafafa;
   transition: all 0.3s ease;
   outline: none;
@@ -96,17 +96,17 @@ body {
   top: 50%;
   transform: translateY(-50%);
   color: #999;
-  font-size: 16px;
+  font-size: 18px;
   pointer-events: none;
   transition: all 0.3s ease;
   background: transparent;
 }
 
-.input-field:focus ~ .input-label,
-.input-field:not(:placeholder-shown) ~ .input-label {
+.input-field:focus~.input-label,
+.input-field:not(:placeholder-shown)~.input-label {
   top: 12px;
   left: 16px;
-  font-size: 12px;
+  font-size: 14px;
   color: #50046e;
   font-weight: 600;
 }
@@ -152,7 +152,7 @@ body {
 }
 
 .checkbox-label {
-  font-size: 14px;
+  font-size: 16px;
   color: #666;
   cursor: pointer;
 }
@@ -166,7 +166,7 @@ body {
 .forgot-link {
   color: #50046e;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   transition: color 0.3s ease;
 }
@@ -184,7 +184,7 @@ body {
   color: #ffffff;
   border: none;
   border-radius: 12px;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -267,7 +267,7 @@ body {
 }
 
 .copy {
-  font-size: 14px;
+  font-size: 30px;
   color: #666;
   margin: 0;
 }
@@ -374,6 +374,6 @@ body {
   }
 
   .copy {
-    font-size: 13px;
+    font-size: 30px;
   }
 }
