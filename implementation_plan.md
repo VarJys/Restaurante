@@ -150,3 +150,41 @@ Se conectarán estos componentes al `supabase.service.ts` para que el inicio de 
 2. Como administrador: Registrar un pago para un cliente y verificar que se refleje en la base de datos.
 3. Como cliente: Registrar un consumo y verificar que el sistema valide que tiene una mensualidad activa.
 4. Validar que la información se guarda y consulta correctamente desde Supabase.
+
+---
+
+# Generación de APK para Android (Integración con Capacitor)
+
+Para que el proyecto Angular pueda ser visualizado e instalado como una aplicación nativa en dispositivos Android (.apk), utilizaremos **Capacitor**, la herramienta moderna recomendada (desarrollada por el equipo de Ionic) que envuelve aplicaciones web en contenedores nativos de forma sencilla y eficiente.
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Generación Final del APK:** Capacitor preparará el proyecto de Android y lo vinculará con tu código de Angular. Sin embargo, para compilar el archivo `.apk` final o el `.aab`, **necesitarás tener instalado Android Studio** en tu computadora local. El agente ejecutará todas las configuraciones y preparativos, pero el paso final de construcción nativa deberás hacerlo abriendo el proyecto en Android Studio. ¿Estás de acuerdo con este flujo?
+
+## Proposed Changes
+
+### Dependencias y Configuración
+
+#### [MODIFY] `package.json`
+Se instalarán las dependencias necesarias de Capacitor:
+- `@capacitor/core`
+- `@capacitor/cli` (devDependencies)
+- `@capacitor/android`
+Además, se añadirán scripts útiles para la sincronización con Android.
+
+#### [NEW] `capacitor.config.ts`
+Archivo de configuración principal de Capacitor que se generará automáticamente con `npx cap init`. Se configurará el `webDir` apuntando a la carpeta de salida del build de Angular (`dist/frontend/browser`).
+
+#### [NEW] `android/`
+Se generará el directorio nativo de Android ejecutando `npx cap add android`. Esta carpeta contendrá el proyecto nativo que Android Studio utilizará para generar el APK.
+
+## Verification Plan
+
+### Automated Steps
+- Ejecutar el build de producción de Angular (`npm run build`).
+- Sincronizar los archivos compilados con la plataforma Android (`npx cap sync android`).
+
+### Manual Verification
+- Solicitar al usuario que ejecute `npx cap open android` en su terminal local.
+- Verificar que Android Studio abra el proyecto correctamente y permita compilar/ejecutar el APK en un emulador o dispositivo físico conectado.
